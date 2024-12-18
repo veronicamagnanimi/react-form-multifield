@@ -1,29 +1,44 @@
 import {useState} from "react";
 
+const initalForm = {
+  title: "",
+  description: "",
+  author: "",
+  image: "",
+  category: "",
+  published: false
+}
+
 function App() {
 
   const [activeArticles, setActiveArticles] = useState([]);
-  const [articleTitle, setArticleTitle] = useState("");
-  const [articleAuthor, setArticleAuthor] = useState("");
+  const [formData, setFormData] = useState(initalForm);
+  // const [articleTitle, setArticleTitle] = useState("");
+  // const [articleAuthor, setArticleAuthor] = useState("");
 
   //FUNZIONE EVENTO BOTTONE
   const handleArticlesForm = (event) => {
     event.preventDefault()
 
-  //CONTROLLO SUL BOTTONE
-  if (articleTitle !== "" && articleAuthor !== "") {
-    const newArticle = {
-      id: Date.now(),
-      title: articleTitle,
-      author: articleAuthor
-    };
-    const newArray = [...activeArticles, newArticle];
-
-    setActiveArticles(newArray)
-
-    setArticleTitle("");
-    setArticleAuthor("");
+  //creo l'oggetto del nuovo articolo
+  const newArticle = {
+    ...formData,
+    id: Date.now()
   }
+
+  //CONTROLLO SUL BOTTONE
+   if( !formData.author || !formData.author) {
+    alert("Fin in all fields");
+    return
+   }
+
+    const newArray = [...activeArticles, newArticle];
+    setActiveArticles(newArray);
+    
+  //resetta i campi
+    setFormData({...initalForm});
+
+ 
  };
 
  // FUNZIONE RIMUOVI ARTICOLO
@@ -33,37 +48,50 @@ function App() {
   } 
 
 
+// FUNZIONE INPUT
+const handleInputChange = (event) => {
+  const keyToChange = event.target.name;
+  const newValue = event.target.value;
+
+  const newDataForm = {
+    ...formData, 
+    [keyToChange]: newValue,
+  };
+  setFormData(newDataForm)
+}
+
+
   return (
     <>
       <div className="container">
         <h2 className="text-center text-secondary my-3 fs-1">New articles</h2>
         {activeArticles.length > 0 ? (
           <div>
-            {
-              activeArticles.map((curItem) => (<div key={curItem.id}>
+            {activeArticles.map((curItem) => (<div key={curItem.id}>
                 <h4>{curItem.title}</h4>
                 <p>{curItem.author}</p>
                 <button onClick={() => {removeElem(curItem)}}>🗑️</button>
               </div>
-              ))
-            }
+              ))}
           </div>
         ) : (
           <p className="text-secondary">There are currently no articles</p>
-        )
-        }
-
+        )}
+       
+       {/* FORM */}
         <h2 className="text-secondary mb-3">Insert a new article here</h2>
         <form action="" onSubmit={handleArticlesForm}>
           <div className="mb-3">
             <label htmlFor="title" className="text-secondary"><strong>Enter title</strong></label>
-            <input className="form-control" id="title" type="text" value={articleTitle} onChange={(event) => {setArticleTitle(event.target.value)}} />
+            <input className="form-control" id="title" type="text"
+            name="title" value={formData.name} onChange={handleInputChange} />
           </div>
 
           <div>
             <label htmlFor="author" className="text-secondary"><strong>Enter author</strong></label>
-            <input type="text" id="author" className="form-control" value={articleAuthor}
-              onChange={(event) => {setArticleAuthor(event.target.value)}}/>
+            <input type="text" id="author" className="form-control"
+            name="author" value={formData.author}
+              onChange={handleInputChange}/>
           </div>
           <button type="submit" className="btn btn-secondary mt-3">Add Article</button>
         </form>

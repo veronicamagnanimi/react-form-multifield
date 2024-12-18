@@ -5,7 +5,7 @@ const initalForm = {
   description: "",
   author: "",
   image: "",
-  category: "",
+  category: "", //select
   published: false
 }
 
@@ -13,8 +13,7 @@ function App() {
 
   const [activeArticles, setActiveArticles] = useState([]);
   const [formData, setFormData] = useState(initalForm);
-  // const [articleTitle, setArticleTitle] = useState("");
-  // const [articleAuthor, setArticleAuthor] = useState("");
+
 
   //FUNZIONE EVENTO BOTTONE
   const handleArticlesForm = (event) => {
@@ -69,7 +68,8 @@ const handleInputChange = (event) => {
           <div>
             {activeArticles.map((curItem) => (<div key={curItem.id}>
                 <h4>{curItem.title}</h4>
-                <p>{curItem.author}</p>
+                <h5>{curItem.author}</h5>
+                <p>{curItem.description}</p>
                 <button onClick={() => {removeElem(curItem)}}>🗑️</button>
               </div>
               ))}
@@ -87,12 +87,20 @@ const handleInputChange = (event) => {
             name="title" value={formData.name} onChange={handleInputChange} />
           </div>
 
-          <div>
+          <div className="mb-3">
             <label htmlFor="author" className="text-secondary"><strong>Enter author</strong></label>
             <input type="text" id="author" className="form-control"
             name="author" value={formData.author}
               onChange={handleInputChange}/>
           </div>
+
+          <div className="mb-3">
+            <label htmlFor="description" className="text-secondary"><strong>Enter description</strong></label>
+            <input type="text" id="description" className="form-control"
+            name="description" value={formData.description}
+              onChange={handleInputChange}/>
+          </div>
+
           <button type="submit" className="btn btn-secondary mt-3">Add Article</button>
         </form>
       </div>

@@ -69,7 +69,7 @@ const handleInputChange = (event) => {
             {activeArticles.map((curItem) => (<div key={curItem.id}>
                 <h4>{curItem.title}</h4>
                 <h5>{curItem.author}</h5>
-                <p>{curItem.description}</p>
+                <p>{curItem.description}</p> <span>{curItem.category}</span>
                 <button onClick={() => {removeElem(curItem)}}>🗑️</button>
               </div>
               ))}
@@ -100,6 +100,21 @@ const handleInputChange = (event) => {
             name="description" value={formData.description}
               onChange={handleInputChange}/>
           </div>
+
+          <div className="mb-3">
+          <select className="form-select text-secondary " aria-label="Default select example" name="category"
+           value={formData.category} onChange={handleInputChange}>
+           <option selected>Category</option>
+          <option value="Category 1">One</option>
+          <option value="Category 2">Two</option>
+          <option value="Category 3">Three</option>
+         </select>
+          </div>
+
+
+
+
+
 
           <button type="submit" className="btn btn-secondary mt-3">Add Article</button>
         </form>
